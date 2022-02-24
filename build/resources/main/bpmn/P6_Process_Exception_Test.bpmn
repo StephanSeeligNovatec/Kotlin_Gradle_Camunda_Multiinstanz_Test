@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1bgmhg4" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="P6_Process_Exception_Test" isExecutable="true" camunda:versionTag="6">
+    <bpmn:startEvent id="Event_1y0uwcg">
+      <bpmn:outgoing>Flow_0olryus</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0i1u7ag">
+      <bpmn:incoming>Flow_1epnusp</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_1fg9o7e" name="Set variable" camunda:asyncBefore="true" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_0olryus</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vm1k9y</bpmn:outgoing>
+      <bpmn:script>execution.setVariable('group', '["Ford", "BMW", "Fiat"]');</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Activity_0pse9vv" name="sdfa" camunda:asyncBefore="true" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_1d73ir7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1epnusp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_0uwvh8x" name="Transaction Logger" camunda:asyncBefore="true" camunda:delegateExpression="${transactionLoggingDelegate}">
+      <bpmn:incoming>Flow_0vm1k9y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l7js9l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0olryus" sourceRef="Event_1y0uwcg" targetRef="Activity_1fg9o7e" />
+    <bpmn:sequenceFlow id="Flow_1epnusp" sourceRef="Activity_0pse9vv" targetRef="Event_0i1u7ag" />
+    <bpmn:sequenceFlow id="Flow_0vm1k9y" sourceRef="Activity_1fg9o7e" targetRef="Activity_0uwvh8x" />
+    <bpmn:sequenceFlow id="Flow_1l7js9l" sourceRef="Activity_0uwvh8x" targetRef="Activity_12ks8qg" />
+    <bpmn:subProcess id="Activity_12ks8qg" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_1l7js9l</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d73ir7</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:asyncBefore="true" camunda:collection="shoppingList" camunda:elementVariable="shoppingItem" />
+      <bpmn:startEvent id="Event_10wi7r9">
+        <bpmn:outgoing>Flow_1c5sl3d</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="Activity_1r2tdbu" name="MultiInstanzSevice" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:delegateExpression="${multiInstanzDelegate}">
+        <bpmn:incoming>Flow_1c5sl3d</bpmn:incoming>
+        <bpmn:outgoing>Flow_0ai257z</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1c5sl3d" sourceRef="Event_10wi7r9" targetRef="Activity_1r2tdbu" />
+      <bpmn:endEvent id="Event_00o037m">
+        <bpmn:incoming>Flow_0ai257z</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0ai257z" sourceRef="Activity_1r2tdbu" targetRef="Event_00o037m" />
+      <bpmn:subProcess id="Activity_0pvgsvk" triggeredByEvent="true">
+        <bpmn:startEvent id="Event_05aw6db">
+          <bpmn:outgoing>Flow_1km6wfh</bpmn:outgoing>
+          <bpmn:errorEventDefinition id="ErrorEventDefinition_11gnrz2" errorRef="Error_18fzntt" />
+        </bpmn:startEvent>
+        <bpmn:userTask id="Activity_1a73ww3" name="dfg">
+          <bpmn:incoming>Flow_1km6wfh</bpmn:incoming>
+          <bpmn:outgoing>Flow_1svchc8</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:endEvent id="Event_0sm086q">
+          <bpmn:incoming>Flow_1svchc8</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_1svchc8" sourceRef="Activity_1a73ww3" targetRef="Event_0sm086q" />
+        <bpmn:sequenceFlow id="Flow_1km6wfh" sourceRef="Event_05aw6db" targetRef="Activity_1a73ww3" />
+        <bpmn:textAnnotation id="TextAnnotation_110ql8g">
+          <bpmn:text>Pro Fehler ein Catch bzw. token</bpmn:text>
+        </bpmn:textAnnotation>
+        <bpmn:association id="Association_0hy47ct" sourceRef="Event_05aw6db" targetRef="TextAnnotation_110ql8g" />
+      </bpmn:subProcess>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1d73ir7" sourceRef="Activity_12ks8qg" targetRef="Activity_0pse9vv" />
+    <bpmn:textAnnotation id="TextAnnotation_0x8j4yz">
+      <bpmn:text>AC BEFORE</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_003lend" sourceRef="Activity_0uwvh8x" targetRef="TextAnnotation_0x8j4yz" />
+    <bpmn:textAnnotation id="TextAnnotation_00slm8m">
+      <bpmn:text>P6</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0euyi2j" sourceRef="Event_1y0uwcg" targetRef="TextAnnotation_00slm8m" />
+  </bpmn:process>
+  <bpmn:error id="Error_18fzntt" name="ERROR" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="P6_Process_Exception_Test">
+      <bpmndi:BPMNEdge id="Flow_1d73ir7_di" bpmnElement="Flow_1d73ir7">
+        <di:waypoint x="930" y="250" />
+        <di:waypoint x="980" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l7js9l_di" bpmnElement="Flow_1l7js9l">
+        <di:waypoint x="473" y="250" />
+        <di:waypoint x="520" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vm1k9y_di" bpmnElement="Flow_0vm1k9y">
+        <di:waypoint x="333" y="250" />
+        <di:waypoint x="373" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1epnusp_di" bpmnElement="Flow_1epnusp">
+        <di:waypoint x="1080" y="250" />
+        <di:waypoint x="1142" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0olryus_di" bpmnElement="Flow_0olryus">
+        <di:waypoint x="188" y="250" />
+        <di:waypoint x="233" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1y0uwcg_di" bpmnElement="Event_1y0uwcg">
+        <dc:Bounds x="152" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fg9o7e_di" bpmnElement="Activity_1fg9o7e">
+        <dc:Bounds x="233" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uwvh8x_di" bpmnElement="Activity_0uwvh8x">
+        <dc:Bounds x="373" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pse9vv_di" bpmnElement="Activity_0pse9vv">
+        <dc:Bounds x="980" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i1u7ag_di" bpmnElement="Event_0i1u7ag">
+        <dc:Bounds x="1142" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12ks8qg_di" bpmnElement="Activity_12ks8qg" isExpanded="true">
+        <dc:Bounds x="520" y="160" width="410" height="470" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ai257z_di" bpmnElement="Flow_0ai257z">
+        <di:waypoint x="770" y="260" />
+        <di:waypoint x="844" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c5sl3d_di" bpmnElement="Flow_1c5sl3d">
+        <di:waypoint x="596" y="260" />
+        <di:waypoint x="670" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_10wi7r9_di" bpmnElement="Event_10wi7r9">
+        <dc:Bounds x="560" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1r2tdbu_di" bpmnElement="Activity_1r2tdbu">
+        <dc:Bounds x="670" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00o037m_di" bpmnElement="Event_00o037m">
+        <dc:Bounds x="844" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14herzj_di" bpmnElement="Activity_0pvgsvk" isExpanded="true">
+        <dc:Bounds x="560" y="380" width="320" height="190" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1km6wfh_di" bpmnElement="Flow_1km6wfh">
+        <di:waypoint x="618" y="500" />
+        <di:waypoint x="670" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1svchc8_di" bpmnElement="Flow_1svchc8">
+        <di:waypoint x="770" y="500" />
+        <di:waypoint x="822" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0sm086q_di" bpmnElement="Event_0sm086q">
+        <dc:Bounds x="822" y="482" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ug8gvp_di" bpmnElement="Activity_1a73ww3">
+        <dc:Bounds x="670" y="460" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ioj04l_di" bpmnElement="Event_05aw6db">
+        <dc:Bounds x="582" y="482" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_110ql8g_di" bpmnElement="TextAnnotation_110ql8g">
+        <dc:Bounds x="620" y="400" width="100" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0hy47ct_di" bpmnElement="Association_0hy47ct">
+        <di:waypoint x="611" y="486" />
+        <di:waypoint x="638" y="454" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0x8j4yz_di" bpmnElement="TextAnnotation_0x8j4yz">
+        <dc:Bounds x="373" y="123" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_00slm8m_di" bpmnElement="TextAnnotation_00slm8m">
+        <dc:Bounds x="190" y="150" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_003lend_di" bpmnElement="Association_003lend">
+        <di:waypoint x="423" y="210" />
+        <di:waypoint x="423" y="153" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0euyi2j_di" bpmnElement="Association_0euyi2j">
+        <di:waypoint x="181" y="236" />
+        <di:waypoint x="228" y="180" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

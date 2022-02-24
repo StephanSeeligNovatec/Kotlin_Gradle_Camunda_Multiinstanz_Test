@@ -15,8 +15,9 @@ class MultiInstanzDelegate : JavaDelegate {
         log.info("Delegate runs for $shoppingItem")
 
         when (shoppingItem) {
-            "Hund" -> throw RuntimeException("Exception because number is $shoppingItem")
+            "Hund" -> throw RuntimeException("Exception item $shoppingItem not allowed")
             // Hiermit wird die MultiInstanz abgebrochen
+            //"Brot" -> throw ForbiddenItemBpmnError(Process.ErrorCodes.ERROR_BAD_ITEM, "You shopping for a forbidden item")
             //"Liebe" -> throw ForbiddenItemBpmnError(Process.ErrorCodes.ERROR_BAD_ITEM, "You shopping for a forbidden item")
         }
 

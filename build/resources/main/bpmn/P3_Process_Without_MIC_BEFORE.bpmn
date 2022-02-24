@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1bgmhg4" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="P3_Process_Without_MIAC" isExecutable="true" camunda:versionTag="6">
+    <bpmn:startEvent id="Event_1y0uwcg">
+      <bpmn:outgoing>Flow_0olryus</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0i1u7ag">
+      <bpmn:incoming>Flow_1epnusp</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_1fg9o7e" name="Set variable" camunda:asyncBefore="true" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_0olryus</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vm1k9y</bpmn:outgoing>
+      <bpmn:script>execution.setVariable('group', '["Ford", "BMW", "Fiat"]');</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Activity_0pse9vv" name="sdfa">
+      <bpmn:incoming>Flow_1jeonpe</bpmn:incoming>
+      <bpmn:outgoing>Flow_1epnusp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1r2tdbu" name="MultiInstanzSevice" camunda:asyncAfter="true" camunda:delegateExpression="${multiInstanzDelegate}">
+      <bpmn:incoming>Flow_1l7js9l</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jeonpe</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="shoppingList" camunda:elementVariable="shoppingItem" />
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0uwvh8x" name="Transaction Logger" camunda:asyncBefore="true" camunda:delegateExpression="${transactionLoggingDelegate}">
+      <bpmn:incoming>Flow_0vm1k9y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l7js9l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0olryus" sourceRef="Event_1y0uwcg" targetRef="Activity_1fg9o7e" />
+    <bpmn:sequenceFlow id="Flow_1epnusp" sourceRef="Activity_0pse9vv" targetRef="Event_0i1u7ag" />
+    <bpmn:sequenceFlow id="Flow_0vm1k9y" sourceRef="Activity_1fg9o7e" targetRef="Activity_0uwvh8x" />
+    <bpmn:sequenceFlow id="Flow_1jeonpe" sourceRef="Activity_1r2tdbu" targetRef="Activity_0pse9vv" />
+    <bpmn:sequenceFlow id="Flow_1l7js9l" sourceRef="Activity_0uwvh8x" targetRef="Activity_1r2tdbu" />
+    <bpmn:textAnnotation id="TextAnnotation_0x8j4yz">
+      <bpmn:text>AC BEFORE</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1e5tcp5">
+      <bpmn:text>AC AFTER</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0lra23o">
+      <bpmn:text>KEIN MIAC</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_19h0nvq" sourceRef="Activity_1r2tdbu" targetRef="TextAnnotation_1e5tcp5" />
+    <bpmn:association id="Association_1ju0g1c" sourceRef="Activity_1r2tdbu" targetRef="TextAnnotation_0lra23o" />
+    <bpmn:association id="Association_003lend" sourceRef="Activity_0uwvh8x" targetRef="TextAnnotation_0x8j4yz" />
+    <bpmn:textAnnotation id="TextAnnotation_00slm8m">
+      <bpmn:text>P3</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0euyi2j" sourceRef="Event_1y0uwcg" targetRef="TextAnnotation_00slm8m" />
+    <bpmn:textAnnotation id="TextAnnotation_0yr3ekw">
+      <bpmn:text>Bei Exception bleiben bei Transaction Logger stehen
+Ein Retry mit Veränderung der Liste bewirkt dass alle 3 nochmal ausgeführt werden
+Ein Retry mit Anpassung der Instanzvariable ist hier nicht möglich</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_10dcdi0" sourceRef="Event_1y0uwcg" targetRef="TextAnnotation_0yr3ekw" />
+  </bpmn:process>
+  <bpmn:error id="Error_0xltfns" name="ERROR" />
+  <bpmn:error id="Error_18fzntt" name="ERROR" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="P3_Process_Without_MIAC">
+      <bpmndi:BPMNEdge id="Flow_1l7js9l_di" bpmnElement="Flow_1l7js9l">
+        <di:waypoint x="473" y="250" />
+        <di:waypoint x="533" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jeonpe_di" bpmnElement="Flow_1jeonpe">
+        <di:waypoint x="633" y="250" />
+        <di:waypoint x="683" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vm1k9y_di" bpmnElement="Flow_0vm1k9y">
+        <di:waypoint x="333" y="250" />
+        <di:waypoint x="373" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1epnusp_di" bpmnElement="Flow_1epnusp">
+        <di:waypoint x="783" y="250" />
+        <di:waypoint x="825" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0olryus_di" bpmnElement="Flow_0olryus">
+        <di:waypoint x="188" y="250" />
+        <di:waypoint x="233" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1y0uwcg_di" bpmnElement="Event_1y0uwcg">
+        <dc:Bounds x="152" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i1u7ag_di" bpmnElement="Event_0i1u7ag">
+        <dc:Bounds x="825" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fg9o7e_di" bpmnElement="Activity_1fg9o7e">
+        <dc:Bounds x="233" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0pse9vv_di" bpmnElement="Activity_0pse9vv">
+        <dc:Bounds x="683" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1r2tdbu_di" bpmnElement="Activity_1r2tdbu">
+        <dc:Bounds x="533" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uwvh8x_di" bpmnElement="Activity_0uwvh8x">
+        <dc:Bounds x="373" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0x8j4yz_di" bpmnElement="TextAnnotation_0x8j4yz">
+        <dc:Bounds x="373" y="123" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1e5tcp5_di" bpmnElement="TextAnnotation_1e5tcp5">
+        <dc:Bounds x="633" y="123" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0lra23o_di" bpmnElement="TextAnnotation_0lra23o">
+        <dc:Bounds x="513" y="140" width="100" height="26" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_00slm8m_di" bpmnElement="TextAnnotation_00slm8m">
+        <dc:Bounds x="190" y="150" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0yr3ekw_di" bpmnElement="TextAnnotation_0yr3ekw">
+        <dc:Bounds x="190" y="320" width="510" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_19h0nvq_di" bpmnElement="Association_19h0nvq">
+        <di:waypoint x="619" y="210" />
+        <di:waypoint x="670" y="153" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1ju0g1c_di" bpmnElement="Association_1ju0g1c">
+        <di:waypoint x="576" y="210" />
+        <di:waypoint x="567" y="166" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_003lend_di" bpmnElement="Association_003lend">
+        <di:waypoint x="423" y="210" />
+        <di:waypoint x="423" y="153" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0euyi2j_di" bpmnElement="Association_0euyi2j">
+        <di:waypoint x="181" y="236" />
+        <di:waypoint x="228" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_10dcdi0_di" bpmnElement="Association_10dcdi0">
+        <di:waypoint x="181" y="264" />
+        <di:waypoint x="228" y="320" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

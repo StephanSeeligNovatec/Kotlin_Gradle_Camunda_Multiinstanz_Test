@@ -5,9 +5,13 @@ import kotlin.reflect.jvm.isAccessible
 
 /** Process constants. */
 object Process {
-    const val SIMPLE_MULTI = "Process_Multiinstanz"
-    const val KOMPLEX_MULTI = "Process_Multiinstanz_Komplex"
-    const val FILE_NAME = "process.bpmn"
+    const val P1_BASE = "P1_Process_Base"
+    const val P2_WITH_MIC_BEFORE = "P2_Process_With_MIC_BEFORE"
+    const val P3_WITHOUT_MIC = "P3_Process_Without_MIAC"
+    const val P4_WITH_AC_BEFOREundAFTER_With_MIAC_BEFORE = "P4_Process_With_AC_BEFOREundAFTER_With_MIAC_BEFORE"
+    const val P5_WITHOUT_MIAC_With_AC_BEFOREundAFTER = "P5_Process_Without_MIAC_With_AC_BEFOREundAFTER"
+    const val P6_Process_Exception_Test = "P6_Process_Exception_Test"
+
 
     /** Activity IDs of [Process]. */
     object ActivityIds {
